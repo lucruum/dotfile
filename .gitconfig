@@ -1,0 +1,77 @@
+[alias]
+    b = branch
+    copy-branch = !git branch copy-`git rev-parse --abbrev-ref HEAD` HEAD
+
+    c = checkout
+
+    copy = cherry-pick
+
+    blank = "!git commit -am \"blank: $1\" #"
+    build = "!git commit -am \"build: $1\" #"
+    chore = "!git commit -am \"chore: $1\" #"
+    ci = "!git commit -am \"ci: $1\" #"
+    docs = "!git commit -am \"docs: $1\" #"
+    feat = "!git commit -am \"feat: $1\" #"
+    fix = "!git commit -am \"fix: $1\" #"
+    perf = "!git commit -am \"perf: $1\" #"
+    refactor = "!git commit -am \"refactor: $1\" #"
+    style = "!git commit -am \"style: $1\" #"
+    temp = "!git commit -am \"temp: $1\" #"
+    test = "!git commit -am \"test: $1\" #"
+
+    cane = commit -a --amend --no-edit --date=now
+    rename = commit --amend
+    squash = "!git -c sequence.editor=\"sed '1! s/^pick/squash/' -i\" rebase ${1:-HEAD~2} -i || \
+              git rebase --abort #"
+    wip = commit -am [WIP]
+
+    cfg = config --global -e
+
+    d = diff -w --word-diff=color --word-diff-regex=[[:alnum:]_]+|[[:punct:]]
+    dc = diff -w --word-diff=color --word-diff-regex=.
+    dd = diff --stat=140 --stat-graph-width=20
+    dl = diff -w
+
+    l = log --all --decorate --graph --oneline -25
+
+    p = push
+    pane = !git cane && \
+           git push -f
+
+    del = reset HEAD~1 --hard
+    kill = !git reset HEAD~1 --soft && \
+           git reset
+
+    s = show -w --word-diff=color --word-diff-regex=[[:alnum:]_]+|[[:punct:]]
+    sc = show -w --word-diff=color --word-diff-regex=.
+    sl = show -w
+    ss = show --stat=140 --stat-graph-width=20
+
+    comma = stash push -m
+    dot = stash show stash@{0} -p
+    drop = stash drop
+    dup = stash apply
+    hide = stash push -m [HIDEN]
+    reveal = stash pop
+    shelve = !. \"`git --exec-path`/git-sh-setup\" && \
+             require_clean_work_tree shelve && \
+             m=`git log --format=%B -1` && \
+             git reset HEAD~1 --soft && \
+             git stash push -m \"$m\"
+    unshelve = !. \"`git --exec-path`/git-sh-setup\" && \
+               require_clean_work_tree unshelve && \
+               m=`git stash list --format=%B -1 | sed '1 s/On [^:]+: //' -r` && \
+               git stash pop && \
+               git commit -am \"$m\"
+
+    st = status
+
+[core]
+    editor = [ -z "${1##*gitconfig}" ] && l=makefile";" \
+             notepad++ -l${l:-yaml} -multiInst -nosession -notabbar
+    pager =
+    quotePath = false
+
+[user]
+    email = naoh432@mail.ru
+    name = lucruum
